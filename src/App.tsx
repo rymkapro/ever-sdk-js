@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { TonClient } from '@eversdk/core';
+
+const client = new TonClient();
 
 function App() {
+
+  useEffect(() => {
+    client.utils.compress_zstd({uncompressed: ''}).then((r) => {
+      console.log('Compressed:', r.compressed);
+    })
+  }, [])
+
   return (
     <div className="App">
       <header className="App-header">
