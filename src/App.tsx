@@ -20,7 +20,7 @@ function App() {
         setZstd([]);
     };
 
-    const warmZstd = async () => {
+    const warmZstdParallel = async () => {
         setZstd([['Working...']]);
         const _zstd = await Promise.all(
             phrases.map(async (phrase) => {
@@ -37,6 +37,26 @@ function App() {
                 ];
             })
         );
+        setZstd(_zstd);
+    };
+
+    const warmZstdSequence = async () => {
+        setZstd([['Working...']]);
+        const _zstd = [];
+        for (const phrase of phrases) {
+            const compressed = await client.utils.compress_zstd({
+                uncompressed: Buffer.from(phrase).toString('base64'),
+            });
+            const decompressed = await client.utils.decompress_zstd({
+                compressed: compressed.compressed,
+            });
+
+            _zstd.push([
+                compressed.compressed,
+                Buffer.from(decompressed.decompressed, 'base64').toString(),
+            ]);
+        }
+
         setZstd(_zstd);
     };
 
@@ -65,8 +85,15 @@ function App() {
                         value={zstd.map((pair) => pair.join('\n')).join('\n')}
                     ></textarea>
                 </div>
-                <button onClick={warmZstd} disabled={!phrases.length}>
-                    Warm zstd
+                <button
+                    onClick={warmZstdSequence}
+                    disabled={!phrases.length}
+                    style={{ marginRight: '10px' }}
+                >
+                    Warm zstd (sequence)
+                </button>
+                <button onClick={warmZstdParallel} disabled={!phrases.length}>
+                    Warm zstd (parallel)
                 </button>
             </div>
         </div>
