@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { TonClient } from '@eversdk/core';
 import { Buffer } from 'buffer';
@@ -6,6 +6,7 @@ import { Buffer } from 'buffer';
 const client = new TonClient();
 
 function App() {
+    const [version, setVersion] = useState<string>();
     const [phrases, setPhrases] = useState<string[]>([]);
     const [zstd, setZstd] = useState<string[][]>([]);
 
@@ -60,8 +61,13 @@ function App() {
         setZstd(_zstd);
     };
 
+    useEffect(() => {
+        client.client.version().then((r) => setVersion(r.version));
+    }, [client]);
+
     return (
         <div className="App">
+            <h3>Version {version}</h3>
             <div>
                 <h3>Phrases</h3>
                 <div>
