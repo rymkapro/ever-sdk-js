@@ -12,7 +12,7 @@ function App() {
 
     const generatePhrases = async () => {
         const _phrases = await Promise.all(
-            new Array(200).fill(0).map(async () => {
+            new Array(500).fill(0).map(async () => {
                 const _phrase = await client.crypto.mnemonic_from_random({});
                 return _phrase.phrase;
             })

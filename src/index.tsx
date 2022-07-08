@@ -4,15 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BinaryLibrary, TonClient } from '@eversdk/core';
+// @ts-ignore
 import { libWeb } from '@eversdk/lib-web';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
@@ -22,6 +21,6 @@ reportWebVitals();
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 TonClient.useBinaryLibrary(() => {
-  const promise = libWeb();
-  return promise as unknown as Promise<BinaryLibrary>;
+    const promise = libWeb();
+    return promise as unknown as Promise<BinaryLibrary>;
 });
